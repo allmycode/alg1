@@ -11,10 +11,6 @@ public class Percolation {
         inputIdx = size;
         outputIdx = size+1;
         uf = new WeightedQuickUnionUF(size + 2);
-        for (int i = 0; i < N; i++) {
-            uf.union(inputIdx, i);
-            uf.union(outputIdx, i+N*(N-1));
-        }
     }
 
     private void check(int i, int j) {
@@ -33,11 +29,15 @@ public class Percolation {
             int idxUp = (i-2)*N + (j-1);
             if (isOpen(i-1, j))
                 uf.union(idx, idxUp);
+        } else {
+            uf.union(idx, inputIdx);
         }
         if (i < N) {
             int idxDown = (i)*N + (j-1);
             if (isOpen(i+1, j))
                 uf.union(idx, idxDown);
+        } else {
+            uf.union(idx, outputIdx);
         }
         if (j > 1) {
             int idxLeft = (i-1)*N + (j-2);
@@ -56,7 +56,7 @@ public class Percolation {
         return matrix[idx] > 0;
     }
     public boolean isFull(int i, int j) {
-        check(i, j); i--; j--;
+        check(i, j);
         int idx = (i-1)*N + (j-1);
         return isOpen(i, j) && uf.connected(inputIdx, idx);
     }

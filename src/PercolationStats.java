@@ -54,10 +54,11 @@ public class PercolationStats {
     }
     public static void main(String[] args) {
         PercolationStats stats =
-                new PercolationStats(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+                new PercolationStats(Integer.parseInt(args[0]),
+                        Integer.parseInt(args[1]));
         StdOut.println("mean\t\t\t\t\t= " + stats.mean());
         StdOut.println("stddev\t\t\t\t\t= " + stats.stddev());
-        StdOut.println("95% confidence interval = " +
-                stats.confidenceLo() + ", " + stats.confidenceHi());
+        StdOut.println("95% confidence interval = "
+                + stats.confidenceLo() + ", " + stats.confidenceHi());
     }
 }
