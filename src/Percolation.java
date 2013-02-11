@@ -1,9 +1,9 @@
 public class Percolation {
-    final byte[] matrix;
-    int N;
-    int inputIdx;
-    int outputIdx;
-    WeightedQuickUnionUF uf;
+    private final byte[] matrix;
+    private int N;
+    private int inputIdx;
+    private int outputIdx;
+    private WeightedQuickUnionUF uf;
     public Percolation(int N) {             // create N-by-N grid, with all sites blocked
         this.N = N;
         int size = N*N;

@@ -1,8 +1,8 @@
 public class PercolationStats {
-    final double mean;
-    final double sigma;
-    final double confLo;
-    final double confHi;
+    private final double mean;
+    private final double sigma;
+    private final double confLo;
+    private final double confHi;
 
     public PercolationStats(int N, int T){
         if (N <= 0) throw new IllegalArgumentException("N <= 0");
