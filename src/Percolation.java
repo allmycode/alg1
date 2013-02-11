@@ -1,7 +1,6 @@
 public class Percolation {
     final byte[] matrix;
     int N;
-    int size;
     int inputIdx;
     int outputIdx;
     WeightedQuickUnionUF uf;
@@ -15,7 +14,6 @@ public class Percolation {
         for (int i = 0; i < N; i++) {
             uf.union(inputIdx, i);
             uf.union(outputIdx, i+N*(N-1));
-
         }
     }
 

@@ -5,8 +5,10 @@ public class PercolationStats {
     final double confHi;
 
     public PercolationStats(int N, int T){
+        if (N <= 0) throw new IllegalArgumentException("N <= 0");
+        if (T <= 0) throw new IllegalArgumentException("T <= 0");
         double times = T;
-        double factor = N*N;
+        double factor = N * N;
         double results[] = new double[T];
 
         double sum = 0;
