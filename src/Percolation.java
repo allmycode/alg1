@@ -4,7 +4,7 @@ public class Percolation {
     private int inputIdx;
     private int outputIdx;
     private WeightedQuickUnionUF uf;
-    public Percolation(int N) {             // create N-by-N grid, with all sites blocked
+    public Percolation(int N) {
         this.N = N;
         int size = N*N;
         matrix = new byte[size];
@@ -18,10 +18,14 @@ public class Percolation {
     }
 
     private void check(int i, int j) {
-        if (i <= 0 || i > N) throw new IndexOutOfBoundsException("row index i out of bounds");
-        if (j <= 0 || j > N) throw new IndexOutOfBoundsException("row index j out of bounds");
+        if (i <= 0 || i > N) {
+            throw new IndexOutOfBoundsException("row index i out of bounds");
+        }
+        if (j <= 0 || j > N) {
+            throw new IndexOutOfBoundsException("row index j out of bounds");
+        }
     }
-    public void open(int i, int j) {         // open site (row i, column j) if it is not already
+    public void open(int i, int j) {
         check(i, j);
         int idx = (i-1)*N + (j-1);
         matrix[idx] = 1;
@@ -46,17 +50,17 @@ public class Percolation {
                 uf.union(idx, idxRight);
         }
     }
-    public boolean isOpen(int i, int j) {    // is site (row i, column j) open?
-        check(i, j); i--; j--;
-        int idx = i*N + j;
+    public boolean isOpen(int i, int j) {
+        check(i, j);
+        int idx = (i-1)*N + (j-1);
         return matrix[idx] > 0;
     }
-    public boolean isFull(int i, int j) {   // is site (row i, column j) full?
+    public boolean isFull(int i, int j) {
         check(i, j); i--; j--;
-        int idx = i*N + j;
-        return uf.connected(inputIdx, idx);
+        int idx = (i-1)*N + (j-1);
+        return isOpen(i, j) && uf.connected(inputIdx, idx);
     }
-    public boolean percolates() {          // does the system percolate?
+    public boolean percolates() {
         return uf.connected(inputIdx, outputIdx);
     }
 }

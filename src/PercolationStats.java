@@ -4,18 +4,18 @@ public class PercolationStats {
     private final double confLo;
     private final double confHi;
 
-    public PercolationStats(int N, int T){
+    public PercolationStats(int N, int T) {
         if (N <= 0) throw new IllegalArgumentException("N <= 0");
         if (T <= 0) throw new IllegalArgumentException("T <= 0");
         double times = T;
         double factor = N * N;
-        double results[] = new double[T];
+        double[] results = new double[T];
 
         double sum = 0;
         for (int k = 0; k < T; k++) {
             Percolation p = new Percolation(N);
             int c = 0;
-            while(!p.percolates()) {
+            while (!p.percolates()) {
                 int i = StdRandom.uniform(1, N+1);
                 int j = StdRandom.uniform(1, N+1);
                 if (!p.isOpen(i, j)) {
@@ -53,9 +53,11 @@ public class PercolationStats {
         return confHi;
     }
     public static void main(String[] args) {
-        PercolationStats stats = new PercolationStats(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+        PercolationStats stats =
+                new PercolationStats(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
         StdOut.println("mean\t\t\t\t\t= " + stats.mean());
         StdOut.println("stddev\t\t\t\t\t= " + stats.stddev());
-        StdOut.println("95% confidence interval = " + stats.confidenceLo() + ", " + stats.confidenceHi());
+        StdOut.println("95% confidence interval = " +
+                stats.confidenceLo() + ", " + stats.confidenceHi());
     }
 }
