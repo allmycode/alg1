@@ -1,5 +1,5 @@
 public class Percolation {
-    private final byte[] matrix;
+    private final boolean[] opens;
     private int N;
     private int inputIdx;
     private int outputIdx;
@@ -7,58 +7,51 @@ public class Percolation {
     public Percolation(int N) {
         this.N = N;
         int size = N*N;
-        matrix = new byte[size];
+        opens = new boolean[size];
         inputIdx = size;
         outputIdx = size+1;
         uf = new WeightedQuickUnionUF(size + 2);
     }
 
-    private void check(int i, int j) {
+    private int idx(int i, int j) {
         if (i <= 0 || i > N) {
             throw new IndexOutOfBoundsException("row index i out of bounds");
         }
         if (j <= 0 || j > N) {
             throw new IndexOutOfBoundsException("row index j out of bounds");
         }
+        return (i-1)*N + (j-1);
+    }
+
+    private void connect(int idx, int i, int j) {
+        if (isOpen(i, j))
+            uf.union(idx, idx(i, j));
     }
     public void open(int i, int j) {
-        check(i, j);
-        int idx = (i-1)*N + (j-1);
-        matrix[idx] = 1;
-        if (i > 1) {
-            int idxUp = (i-2)*N + (j-1);
-            if (isOpen(i-1, j))
-                uf.union(idx, idxUp);
-        } else {
+        int idx = idx(i, j);
+        opens[idx] = true;
+
+        if (i > 1)
+            connect(idx, i - 1, j);
+        else
             uf.union(idx, inputIdx);
-        }
-        if (i < N) {
-            int idxDown = (i)*N + (j-1);
-            if (isOpen(i+1, j))
-                uf.union(idx, idxDown);
-        } else {
+
+        if (i < N)
+            connect(idx, i + 1, j);
+        else
             uf.union(idx, outputIdx);
-        }
-        if (j > 1) {
-            int idxLeft = (i-1)*N + (j-2);
-            if (isOpen(i, j-1))
-                uf.union(idx, idxLeft);
-        }
-        if (j < N) {
-            int idxRight = (i-1)*N + (j);
-            if (isOpen(i, j+1))
-                uf.union(idx, idxRight);
-        }
+
+        if (j > 1)
+            connect(idx, i, j - 1);
+
+        if (j < N)
+            connect(idx, i, j + 1);
     }
     public boolean isOpen(int i, int j) {
-        check(i, j);
-        int idx = (i-1)*N + (j-1);
-        return matrix[idx] > 0;
+        return opens[idx(i, j)];
     }
     public boolean isFull(int i, int j) {
-        check(i, j);
-        int idx = (i-1)*N + (j-1);
-        return isOpen(i, j) && uf.connected(inputIdx, idx);
+        return uf.connected(inputIdx, idx(i, j));
     }
     public boolean percolates() {
         return uf.connected(inputIdx, outputIdx);
