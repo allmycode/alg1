@@ -34,7 +34,7 @@ public class PercolationStats {
             double v = (mean - results[k]);
             sumsq += v*v;
         }
-        sigma = sumsq / (times-1);
+        sigma = Math.sqrt(sumsq / (times-1));
 
         double x = 1.96*sigma/Math.sqrt(T);
         confLo = mean - x;
